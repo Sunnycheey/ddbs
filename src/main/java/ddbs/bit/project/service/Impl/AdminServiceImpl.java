@@ -12,11 +12,21 @@ import java.util.List;
 @Service
 public class AdminServiceImpl implements AdminService {
 
-    @Autowired()
+    @Autowired
     private AdminMapper adminMapper;
 
     @Override
     public List<Admin> getAllAdmin() {
         return adminMapper.selectList(null);
+    }
+
+    @Override
+    public int insertAdmin(Admin admin) {
+        return adminMapper.insert(admin);
+    }
+
+    @Override
+    public Admin selectById(long id) {
+        return adminMapper.selectById(id);
     }
 }

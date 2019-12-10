@@ -9,4 +9,6 @@ import java.util.List;
 
 public interface AdminService {
     List<Admin> getAllAdmin();
+    int insertAdmin(Admin admin);
+    Admin selectById(long id);
 }
