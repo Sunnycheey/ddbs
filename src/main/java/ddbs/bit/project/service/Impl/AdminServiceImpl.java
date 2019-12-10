@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import ddbs.bit.project.dao.entity.Admin;
 import ddbs.bit.project.dao.mapper.AdminMapper;
 import ddbs.bit.project.service.AdminService;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

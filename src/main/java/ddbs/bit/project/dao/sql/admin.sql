@@ -1,4 +1,4 @@
-CREATE TABLE admin(
+CREATE TABLE admin1(
     id bigint primary key not null,
     username varchar(30) not null,
     password char(32) not null,
