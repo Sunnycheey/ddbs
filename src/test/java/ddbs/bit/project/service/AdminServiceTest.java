@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import javax.annotation.Resource;
 
@@ -33,6 +34,6 @@ class AdminServiceTest {
         }
     }
     @Test void selectAdmin() {
-        System.out.println(adminService.getAllAdmin());
+        System.out.println(adminService.getAllAdmin().size());
     }
 }

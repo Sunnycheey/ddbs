@@ -18,8 +18,8 @@ class adminMapperTest {
         Admin admin = new Admin();
         admin.setUsername("lihuichao");
         admin.setEmail("lihuichaolihc@gmail.com");
-        admin.setPassword("1229547476");
-        admin.setId(1);
+        admin.setPassword("1");
+        admin.setId(6000);
         System.out.println(admin.getId());
         adminMapper.insert(admin);
     }
