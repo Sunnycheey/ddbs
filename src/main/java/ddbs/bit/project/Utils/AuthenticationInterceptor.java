@@ -60,7 +60,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                 } catch (JWTDecodeException j) {
                     throw new RuntimeException("401");
                 }
-                Admin admin = adminService.selectById(Long.parseLong(adminId));
+                Admin admin = adminService.getAdminById(Long.parseLong(adminId));
                 if (admin == null) {
                     throw new RuntimeException("用户不存在，请重新登录");
                 }

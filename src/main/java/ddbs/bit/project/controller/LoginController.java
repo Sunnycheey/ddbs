@@ -25,7 +25,7 @@ public class LoginController {
     @PostMapping("/login")
     public String login(@RequestBody Admin admin){
         State state = new State();
-        Admin adminForBase =adminService.selectById(admin.getId());
+        Admin adminForBase =adminService.getAdminById(admin.getId());
         if(adminForBase == null){
             state.setStateCode(0);
             state.setMessage("登录失败,用户不存在");

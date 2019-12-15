@@ -1,6 +1,7 @@
 package ddbs.bit.project.service;
 
 import ddbs.bit.project.dao.entity.Admin;
+import org.apache.shardingsphere.core.strategy.keygen.SnowflakeShardingKeyGenerator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,13 +18,15 @@ class AdminServiceTest {
 
     @Test
     public void insertAdmin() {
-        int count = 4001;
+        SnowflakeShardingKeyGenerator snowflakeShardingKeyGenerator = new SnowflakeShardingKeyGenerator();
+        long id = Long.valueOf(snowflakeShardingKeyGenerator.generateKey().toString());
+        int count = 0;
         String username = "lihuichao";
         String password = "p";
         String email = "fuck@bit";
-        while(count <= 5000) {
+        while(count <= 1000) {
             try {
-                adminService.insertAdmin(new Admin(count, username, password, email));
+                adminService.insertAdmin(new Admin(id, username, password, email));
             }
             catch(Exception e) {
                 e.printStackTrace();
@@ -34,6 +37,7 @@ class AdminServiceTest {
         }
     }
     @Test void selectAdmin() {
+
         System.out.println(adminService.getAllAdmin().size());
     }
 }

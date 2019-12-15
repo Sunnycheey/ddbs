@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS user;
+
 CREATE TABLE user(
     id bigint primary key not null,
     username varchar(30) not null,
