@@ -4,9 +4,9 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.*;
+import org.springframework.context.annotation.Bean;
 
-@TableName(value = "usertest")
-
+@TableName(value = "user")
 public class User {
     @TableId(value = "id", type=IdType.INPUT) private long id;
     private String username;

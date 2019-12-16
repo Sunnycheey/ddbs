@@ -14,11 +14,15 @@ import java.util.List;
 public class AdminController {
     @Resource
     private AdminService adminService;
-    @RequestMapping(value = "/Admin/{id}")
+    @RequestMapping(value = "admins")
+    public List<Admin> findAdmins() {
+        return adminService.getAllAdmin();
+    }
+    @RequestMapping(value = "admin/{id}")
     public String getAdminByID(@PathVariable long id){
         State s = new State();
         try{
-            return JSON.toJSONString(adminService.selectById(id));
+            return JSON.toJSONString(adminService.getAdminById(id));
         }
         catch(Exception e) {
             e.printStackTrace();
@@ -27,7 +31,7 @@ public class AdminController {
             return JSON.toJSONString(s);
         }
     }
-    @PostMapping(path = "/Admin", consumes = "application/json", produces = "application/json")
+    @PostMapping(path = "/admin", consumes = "application/json", produces = "application/json")
     public String insertAdmin(@RequestBody Admin admin) {
         State s = new State();
         try {

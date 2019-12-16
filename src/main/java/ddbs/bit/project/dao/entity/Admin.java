@@ -7,10 +7,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-// TODO: ID 自增
-@TableName(value="admin")
-public class Admin extends User{
+import java.io.Serializable;
 
+// TODO: 全局UUID
+// TODO: 增加token
+
+@TableName(value="admin")
+public class Admin extends User implements Serializable {
     public Admin() {
         super();
     }
