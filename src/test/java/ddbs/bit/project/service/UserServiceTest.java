@@ -54,12 +54,6 @@ class UserServiceTest {
         }
         userService.saveBatch(userList);
     }
-    @Test
-    public void getAllUser() {
-        Logger logger = LogManager.getLogger(UserServiceTest.class);
-        List<User> userList = userService.getALlUser();
-        logger.info(userList);
-    }
 /*
     @Test
     public void getPage() {

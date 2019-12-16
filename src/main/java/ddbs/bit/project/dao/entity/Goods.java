@@ -2,6 +2,8 @@ package ddbs.bit.project.dao.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 
+import java.sql.Date;
+
 /**
  * @program: ddbs
  * @description: goods entity
@@ -19,9 +21,9 @@ public class Goods {
     private int originalPrice;
     private int currentPrice;
     private int amount;
-    private int uploadTime;
+    private Date uploadTime;
 
-    public Goods(long id, long userId, String name, String introduction, String pictureURL, String kind, int originalPrice, int currentPrice, int amount, int uploadTime) {
+    public Goods(long id, long userId, String name, String introduction, String pictureURL, String kind, int originalPrice, int currentPrice, int amount, Date uploadTime) {
         this.userId = userId;
         this.id = id;
         this.name = name;
@@ -42,11 +44,11 @@ public class Goods {
         this.kind = kind;
     }
 
-    public int getUploadTime() {
+    public Date getUploadTime() {
         return uploadTime;
     }
 
-    public void setUploadTime(int uploadTime) {
+    public void setUploadTime(Date uploadTime) {
         this.uploadTime = uploadTime;
     }
 

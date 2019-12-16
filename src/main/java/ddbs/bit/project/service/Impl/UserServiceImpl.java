@@ -18,11 +18,4 @@ import java.util.List;
  **/
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
-
-    @Autowired
-    private UserMapper userMapper;
-    @Override
-    public List<User> getALlUser() {
-        return userMapper.selectList(null);
-    }
 }

@@ -10,5 +10,5 @@ CREATE TABLE goods(
     original_price int,
     current_price int not null,
     amount int not null,
-    upload_time int not null
+    upload_time date not null
 );

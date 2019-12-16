@@ -12,5 +12,4 @@ import ddbs.bit.project.dao.entity.User;
  **/
 
 public interface GoodsService extends IService<Goods> {
-    User getUserByGoodId(long id);
 }

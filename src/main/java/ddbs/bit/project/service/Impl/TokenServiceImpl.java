@@ -3,6 +3,7 @@ package ddbs.bit.project.service.Impl;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import ddbs.bit.project.dao.entity.Admin;
+import ddbs.bit.project.dao.entity.User;
 import ddbs.bit.project.service.TokenService;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +26,13 @@ public class TokenServiceImpl implements TokenService {
          */
         String token = "";
         token = JWT.create().withAudience(Long.toString(admin.getId())).sign(Algorithm.HMAC256(admin.getPassword()));
+        return token;
+    }
+
+    @Override
+    public String getToken(User user) {
+        String token = "";
+        token = JWT.create().withAudience(Long.toString(user.getId())).sign(Algorithm.HMAC256(user.getPassword()));
         return token;
     }
 }

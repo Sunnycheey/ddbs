@@ -15,8 +15,4 @@ import org.springframework.stereotype.Service;
  **/
 @Service
 public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements GoodsService {
-    @Override
-    public User getUserByGoodId(long id) {
-        return null;
-    }
 }

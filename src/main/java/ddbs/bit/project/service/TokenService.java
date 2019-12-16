@@ -1,6 +1,7 @@
 package ddbs.bit.project.service;
 
 import ddbs.bit.project.dao.entity.Admin;
+import ddbs.bit.project.dao.entity.User;
 
 /**
  * @program: IntelliJ IDEA
@@ -11,4 +12,5 @@ import ddbs.bit.project.dao.entity.Admin;
 
 public interface TokenService {
     String getToken(Admin admin);
+    String getToken(User user);
 }

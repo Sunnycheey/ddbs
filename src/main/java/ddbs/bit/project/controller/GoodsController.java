@@ -1,5 +1,6 @@
 package ddbs.bit.project.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import ddbs.bit.project.annotation.UserLoginToken;
 import ddbs.bit.project.dao.entity.Goods;
 import ddbs.bit.project.service.GoodsService;
@@ -9,7 +10,9 @@ import org.apache.shardingsphere.core.strategy.keygen.SnowflakeShardingKeyGenera
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Calendar;
 import java.util.List;
+import java.sql.Date;
 
 /**
  * @program: ddbs
@@ -23,7 +26,7 @@ public class GoodsController {
     private Logger logger = LogManager.getLogger(GoodsController.class);
     @Autowired
     private GoodsService goodsService;
-    @RequestMapping("goods")
+    @RequestMapping("/goods")
     public List<Goods> findGoods() {
         List<Goods> goodsList = goodsService.list();
         if(goodsList == null) {
@@ -31,7 +34,7 @@ public class GoodsController {
         }
         return goodsList;
     }
-    @RequestMapping("goods/{id}")
+    @RequestMapping("/goods/{id}")
     public Goods findGoodsById(@PathVariable long id) {
         Goods goods = goodsService.getById(id);
         if(goods == null) {
@@ -41,12 +44,14 @@ public class GoodsController {
         return goodsService.getById(id);
     }
     @UserLoginToken
-    @PostMapping(path="goods", consumes = "application/json", produces = "application/json")
+    @PostMapping(path="/goods", consumes = "application/json", produces = "application/json")
     public boolean addGood(@RequestBody Goods good) {
         // 前端提交数据时并不需要提交id
         logger.warn(String.format("Data from request body is %s", good));
         SnowflakeShardingKeyGenerator snowflakeShardingKeyGenerator = new SnowflakeShardingKeyGenerator();
         good.setId(Long.valueOf(snowflakeShardingKeyGenerator.generateKey().toString()));
+        Date date = new Date(Calendar.getInstance().getTime().getTime());
+        good.setUploadTime(date);
         boolean succeed = goodsService.save(good);
         if(!succeed) {
             // 异常处理
@@ -56,7 +61,7 @@ public class GoodsController {
         return true;
     }
     @UserLoginToken
-    @PutMapping(path="goods/{id}", consumes = "application/json", produces = "application/json")
+    @PutMapping(path="/goods/{id}", consumes = "application/json", produces = "application/json")
     public boolean updateGoodById(@RequestBody Goods good, @PathVariable long id) {
         Goods old = goodsService.getById(id);
         boolean succeed = goodsService.updateById(good);
@@ -68,7 +73,7 @@ public class GoodsController {
     }
     // 需要登陆的操作
     @UserLoginToken
-    @DeleteMapping(path="goods/{id}")
+    @DeleteMapping(path="/goods/{id}")
     public boolean deleteGoodById(@PathVariable long id) {
         boolean succeed = goodsService.removeById(id);
         if(!succeed) {
@@ -76,5 +81,14 @@ public class GoodsController {
             return false;
         }
         return true;
+    }
+    @RequestMapping(path = "/goods/users/{id}")
+    public List<Goods> findGoodsByUserId(@PathVariable long id) {
+        QueryWrapper<Goods> queryWrapper = new QueryWrapper<>();
+        List<Goods> goodsList = goodsService.list(queryWrapper.eq("user_id", id));
+        if(goodsList == null) {
+            logger.warn(String.format("Empty goods list for user id %d"), id);
+        }
+        return goodsList;
     }
 }

@@ -14,7 +14,11 @@ import java.util.List;
 public class AdminController {
     @Resource
     private AdminService adminService;
-    @RequestMapping(value = "/admin/{id}")
+    @RequestMapping(value = "admins")
+    public List<Admin> findAdmins() {
+        return adminService.getAllAdmin();
+    }
+    @RequestMapping(value = "admin/{id}")
     public String getAdminByID(@PathVariable long id){
         State s = new State();
         try{

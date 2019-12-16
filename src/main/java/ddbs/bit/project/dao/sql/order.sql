@@ -8,6 +8,6 @@ CREATE TABLE orders(
     goods_number smallint not null,
     address varchar(50) not null,
     phone_number char(11) not null,
-    order_time int not null,
+    order_time date not null,
     order_state char(2) not null
 )

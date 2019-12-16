@@ -2,7 +2,7 @@ package ddbs.bit.project.dao.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
-
+import java.sql.Date;
 /**
  * @program: ddbs
  * @description: Orders entity
@@ -19,7 +19,7 @@ public class Orders {
     private int goodsNumber;
     private String address;
     private String phoneNumber;
-    private int orderTime;
+    private Date orderTime;
     private String orderState;
 
     public long getId() {
@@ -78,11 +78,11 @@ public class Orders {
         this.phoneNumber = phoneNumber;
     }
 
-    public int getOrderTime() {
+    public Date getOrderTime() {
         return orderTime;
     }
 
-    public void setOrderTime(int orderTime) {
+    public void setOrderTime(Date orderTime) {
         this.orderTime = orderTime;
     }
 
