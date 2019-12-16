@@ -20,13 +20,14 @@
 
 * 商品表（items）
 
-| id | userId | name | introduction | pictureURL | kind | originalPrice | currentPrice | amount | uploadTime
+| id | userId | name | introduction | pictureURL | kind | originalPrice | currentPrice | amount | uploadTime |
 | --- | ---| ---| ---| ---| ---| ---| ---| ---| ---| 
 | 商品id，主键| 用户id，外键 | 商品名，非空| 介绍，非空 | 图片链接地址 | 商品种类 | 原始价格 | 当前价格，非空 | 数量，非空 | 商品上传时间，非空 | 
 
 *  交易表
 
 交易表中的每个属性值都不能为空
+
 | id | goodId | userId | totalPrice | goodsNumber | address | phoneNumber | orderTime | orderState| 
 | --- | ---| ---| ---| ---| ---| ---| ---| ---|
 | 交易id，主键| 商品id，外键| 用户id，外键| 订单总价| 订货数量 | 收货地址 | 收货电话 | 生成订单时间 | 订单状态 |
@@ -68,3 +69,8 @@ POST http://127.0.0.1:8080/users，其中http的request body为待提交的JSON�
 PUT http://127.0.0.1:8080/users/{id}，其中http的request body为待提交的JSON格式数据，该数据既可以为
 用户表的全属性（即更新用户所有信息），也可以为用户表的部分属性（即更新用户的部分信息，例如用户名）
 ```
+
+## Todo:
+
+1. 从前端提交的token中提取出用户ID
+2. 实现表的联合查询
