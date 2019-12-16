@@ -60,15 +60,13 @@ class UserServiceTest {
         List<User> userList = userService.getALlUser();
         logger.info(userList);
     }
-    /*
-
+/*
     @Test
     public void getPage() {
         Logger logger = LogManager.getLogger(UserServiceTest.class);
         IPage<User> page = new Page<>(1, 20);
-        page = userService.page(page);
-        logger.info(page);
+        page = userService.page(page, null);
+        logger.info(page.getRecords());
     }
-
-     */
+*/
 }
