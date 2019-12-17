@@ -5,14 +5,14 @@ CREATE TABLE ADMIN0(
     id bigint primary key not null,
     username varchar(30) not null,
     // using sha256 (length of 32 bytes) to stored users password
-    password char(32) not null,
+    password char(64) not null,
     email varchar(40) unique not null
 );
 
 CREATE TABLE ADMIN1(
     id bigint primary key not null,
     username varchar(30) not null,
-    password char(32) not null,
+    password char(64) not null,
     email varchar(40)
 );
 

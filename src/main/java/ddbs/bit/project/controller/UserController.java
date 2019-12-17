@@ -7,7 +7,11 @@ import org.apache.logging.log4j.Logger;
 import org.apache.shardingsphere.core.strategy.keygen.SnowflakeShardingKeyGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.apache.commons.codec.binary.Hex;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 /**
@@ -40,7 +44,7 @@ public class UserController {
         return user;
     }
     @PostMapping(path="/users", consumes = "application/json", produces = "application/json")
-    public boolean addUser(@RequestBody User user) {
+    public boolean addUser(@RequestBody User user) throws NoSuchAlgorithmException {
         User storedUser = userService.getUserByEmail(user.getEmail());
         if(storedUser != null) {
             logger.warn("User already exist");
@@ -49,6 +53,10 @@ public class UserController {
         SnowflakeShardingKeyGenerator snowflakeShardingKeyGenerator = new SnowflakeShardingKeyGenerator();
         Long id = Long.parseLong(snowflakeShardingKeyGenerator.generateKey().toString());
         user.setId(id);
+        String originalPassword = user.getPassword();
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] hash = digest.digest(originalPassword.getBytes(StandardCharsets.UTF_8));
+        user.setHash(Hex.encodeHexString(hash));
         boolean succeed = userService.save(user);
         if(!succeed) {
             logger.warn(String.format("Cannot add user %s", user));

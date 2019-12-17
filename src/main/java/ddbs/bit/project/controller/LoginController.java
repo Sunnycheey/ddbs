@@ -8,8 +8,13 @@ import ddbs.bit.project.dao.entity.User;
 import ddbs.bit.project.service.AdminService;
 import ddbs.bit.project.service.TokenService;
 import ddbs.bit.project.service.UserService;
+import org.apache.commons.codec.binary.Hex;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * @program: project
@@ -27,7 +32,7 @@ public class LoginController {
     TokenService tokenService;
 
     @PostMapping("userLogin")
-    public String login(@RequestBody User user) {
+    public String login(@RequestBody User user) throws NoSuchAlgorithmException {
         State state = new State();
         User userForBase = userService.getUserByEmail(user.getEmail());
         if(userForBase == null){
@@ -35,11 +40,16 @@ public class LoginController {
             state.setMessage("登录失败,用户不存在");
             return JSON.toJSONString(state);
         }else {
-            if (!userForBase.getPassword().equals(userForBase.getPassword())){
+            String originalPassword = user.getPassword();
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(originalPassword.getBytes(StandardCharsets.UTF_8));
+            String hashHex = Hex.encodeHexString(hash);
+            if (!userForBase.getHash().equals(hashHex)){
                 state.setStateCode(1);
                 state.setMessage("密码错误");
                 return JSON.toJSONString(state);
-            }else {
+            }
+            else {
                 String token = tokenService.getToken(userForBase);
                 state.setStateCode(2);
                 state.setMessage(token);
@@ -48,7 +58,7 @@ public class LoginController {
         }
     }
     @PostMapping("adminLogin")
-    public String login(@RequestBody Admin admin){
+    public String login(@RequestBody Admin admin) throws NoSuchAlgorithmException {
         State state = new State();
         Admin adminForBase =adminService.getAdminByEmail(admin.getEmail());
         if(adminForBase == null){
@@ -56,11 +66,16 @@ public class LoginController {
             state.setMessage("登录失败,用户不存在");
             return JSON.toJSONString(state);
         }else {
-            if (!adminForBase.getPassword().equals(admin.getPassword())){
+            String originalPassword = admin.getPassword();
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(originalPassword.getBytes(StandardCharsets.UTF_8));
+            String hashHex = Hex.encodeHexString(hash);
+            if (!adminForBase.getHash().equals(hashHex)){
                 state.setStateCode(1);
                 state.setMessage("密码错误");
                 return JSON.toJSONString(state);
-            }else {
+            }
+            else {
                 String token = tokenService.getToken(adminForBase);
                 state.setStateCode(2);
                 state.setMessage(token);
