@@ -1,6 +1,7 @@
 package ddbs.bit.project.service.Impl;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import ddbs.bit.project.dao.entity.Admin;
 import ddbs.bit.project.dao.mapper.AdminMapper;
 import ddbs.bit.project.service.AdminService;
@@ -18,29 +19,5 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-public class AdminServiceImpl implements AdminService {
-
-    private static final Logger logger = LogManager.getLogger(AdminServiceImpl.class);
-
-    @Autowired
-    private AdminMapper adminMapper;
-    @Resource
-    private DataSource dataSource;
-    @Override
-    public List<Admin> getAllAdmin() {
-        logger.info(String.format("Get all admin from datasource %s", dataSource));
-        return adminMapper.selectList(null);
-    }
-
-    @Override
-    public int insertAdmin(Admin admin) {
-        logger.info(String.format("Insert %s to datasource %s", admin, dataSource));
-        return adminMapper.insert(admin);
-    }
-
-    @Override
-    public Admin getAdminById(long id) {
-        logger.info(String.format("Get admin by id %d from datasource %s", id, dataSource));
-        return adminMapper.selectById(id);
-    }
+public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements AdminService {
 }

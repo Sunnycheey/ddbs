@@ -50,7 +50,7 @@ public class LoginController {
     @PostMapping("adminLogin")
     public String login(@RequestBody Admin admin){
         State state = new State();
-        Admin adminForBase =adminService.getAdminById(admin.getId());
+        Admin adminForBase =adminService.getById(admin.getId());
         if(adminForBase == null){
             state.setStateCode(0);
             state.setMessage("登录失败,用户不存在");
