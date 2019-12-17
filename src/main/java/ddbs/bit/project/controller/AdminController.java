@@ -5,6 +5,7 @@ import ddbs.bit.project.annotation.AdminLoginToken;
 import ddbs.bit.project.dao.entity.Admin;
 import ddbs.bit.project.dao.entity.User;
 import ddbs.bit.project.service.AdminService;
+import org.apache.commons.codec.binary.Hex;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +48,7 @@ public class AdminController {
         String originalPassword = admin.getPassword();
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
         byte[] hash = digest.digest(originalPassword.getBytes(StandardCharsets.UTF_8));
-        admin.setHash(hash);
+        admin.setHash(Hex.encodeHexString(hash));
         boolean succeed = adminService.save(admin);
         if(!succeed) {
             logger.warn(String.format("Insert admin %s failed", admin));

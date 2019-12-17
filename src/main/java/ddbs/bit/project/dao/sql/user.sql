@@ -4,14 +4,14 @@ DROP TABLE IF EXISTS USER1;
 CREATE TABLE USER0(
     id bigint primary key not null,
     username varchar(30) not null,
-    password binary(32) not null,
+    password char(64) not null,
     email varchar(40) unique not null
 );
 
 CREATE TABLE USER1(
     id bigint primary key not null,
     username varchar(30) not null,
-    password binary(32) not null,
+    password char(64) not null,
     email varchar(40) unique not null
 );
 

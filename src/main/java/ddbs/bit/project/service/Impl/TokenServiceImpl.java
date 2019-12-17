@@ -25,14 +25,14 @@ public class TokenServiceImpl implements TokenService {
          * @Date: 2019-12-14
          */
         String token = "";
-        token = JWT.create().withAudience(Long.toString(admin.getId())).sign(Algorithm.HMAC256(admin.getPassword()));
+        token = JWT.create().withAudience(Long.toString(admin.getId())).sign(Algorithm.HMAC256(admin.getHash()));
         return token;
     }
 
     @Override
     public String getToken(User user) {
         String token = "";
-        token = JWT.create().withAudience(Long.toString(user.getId())).sign(Algorithm.HMAC256(user.getPassword()));
+        token = JWT.create().withAudience(Long.toString(user.getId())).sign(Algorithm.HMAC256(user.getHash()));
         return token;
     }
 }

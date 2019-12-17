@@ -5,6 +5,10 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.*;
+import org.apache.ibatis.type.BlobTypeHandler;
+import org.apache.ibatis.type.ByteArrayTypeHandler;
+import org.apache.ibatis.type.JdbcType;
+import org.h2.jdbc.JdbcBlob;
 import org.springframework.context.annotation.Bean;
 
 import java.util.Arrays;
@@ -14,7 +18,7 @@ public class User {
     @TableId(value = "id", type=IdType.INPUT) private long id;
     private String username;
     @TableField(value = "password")
-    private byte[] hash;
+    private String hash;
     @TableField(exist = false)
     private String password;
     private String email;
@@ -23,7 +27,7 @@ public class User {
 
     }
 
-    public User(long id, String username, byte[] hash, String password, String email) {
+    public User(long id, String username, String hash, String password, String email) {
         this.id = id;
         this.username = username;
         this.hash = hash;
@@ -39,7 +43,7 @@ public class User {
         return username;
     }
 
-    public byte[] getHash() {
+    public String getHash() {
         return hash;
     }
 
@@ -67,7 +71,7 @@ public class User {
         this.email = email;
     }
 
-    public void setHash(byte[] hash) {
+    public void setHash(String hash) {
         this.hash = hash;
     }
 
@@ -76,7 +80,7 @@ public class User {
         return "User{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
-                ", hash=" + Arrays.toString(hash) +
+                ", hash=" + hash + '\'' +
                 ", email='" + email + '\'' +
                 '}';
     }

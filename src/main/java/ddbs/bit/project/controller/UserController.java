@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 import org.apache.shardingsphere.core.strategy.keygen.SnowflakeShardingKeyGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.apache.commons.codec.binary.Hex;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -55,7 +56,7 @@ public class UserController {
         String originalPassword = user.getPassword();
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
         byte[] hash = digest.digest(originalPassword.getBytes(StandardCharsets.UTF_8));
-        user.setHash(hash);
+        user.setHash(Hex.encodeHexString(hash));
         boolean succeed = userService.save(user);
         if(!succeed) {
             logger.warn(String.format("Cannot add user %s", user));

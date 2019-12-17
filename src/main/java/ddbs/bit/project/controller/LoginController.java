@@ -8,6 +8,7 @@ import ddbs.bit.project.dao.entity.User;
 import ddbs.bit.project.service.AdminService;
 import ddbs.bit.project.service.TokenService;
 import ddbs.bit.project.service.UserService;
+import org.apache.commons.codec.binary.Hex;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,7 +43,8 @@ public class LoginController {
             String originalPassword = user.getPassword();
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             byte[] hash = digest.digest(originalPassword.getBytes(StandardCharsets.UTF_8));
-            if (!userForBase.getPassword().equals(hash)){
+            String hashHex = Hex.encodeHexString(hash);
+            if (!userForBase.getHash().equals(hashHex)){
                 state.setStateCode(1);
                 state.setMessage("密码错误");
                 return JSON.toJSONString(state);
@@ -67,7 +69,8 @@ public class LoginController {
             String originalPassword = admin.getPassword();
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             byte[] hash = digest.digest(originalPassword.getBytes(StandardCharsets.UTF_8));
-            if (!adminForBase.getPassword().equals(hash)){
+            String hashHex = Hex.encodeHexString(hash);
+            if (!adminForBase.getHash().equals(hashHex)){
                 state.setStateCode(1);
                 state.setMessage("密码错误");
                 return JSON.toJSONString(state);
