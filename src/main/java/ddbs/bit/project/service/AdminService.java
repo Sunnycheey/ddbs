@@ -8,8 +8,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public interface AdminService {
-    List<Admin> getAllAdmin();
-    int insertAdmin(Admin admin);
-    Admin getAdminById(long id);
+public interface AdminService extends IService<Admin> {
+    Admin getAdminByEmail(String email);
 }

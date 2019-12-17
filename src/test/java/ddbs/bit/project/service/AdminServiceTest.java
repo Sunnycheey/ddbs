@@ -26,7 +26,7 @@ class AdminServiceTest {
         String email = "fuck@bit";
         while(count <= 1000) {
             try {
-                adminService.insertAdmin(new Admin(id, username, password, email));
+                adminService.save(new Admin(id, username, password, email));
             }
             catch(Exception e) {
                 e.printStackTrace();
@@ -38,6 +38,6 @@ class AdminServiceTest {
     }
     @Test void selectAdmin() {
 
-        System.out.println(adminService.getAllAdmin().size());
+        System.out.println(adminService.list().size());
     }
 }

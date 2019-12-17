@@ -1,9 +1,13 @@
 package ddbs.bit.project.controller;
 
 import com.alibaba.fastjson.JSON;
+import ddbs.bit.project.annotation.AdminLoginToken;
 import ddbs.bit.project.dao.entity.Admin;
 import ddbs.bit.project.dao.entity.User;
 import ddbs.bit.project.service.AdminService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -12,38 +16,37 @@ import java.util.List;
 
 @RestController
 public class AdminController {
-    @Resource
+    Logger logger = LogManager.getLogger(AdminController.class);
+    @Autowired
     private AdminService adminService;
+    @AdminLoginToken
     @RequestMapping(value = "admins")
-    public List<Admin> findAdmins() {
-        return adminService.getAllAdmin();
-    }
+    public List<Admin> findAdmins() { return adminService.list(); }
+    @AdminLoginToken
     @RequestMapping(value = "admin/{id}")
-    public String getAdminByID(@PathVariable long id){
-        State s = new State();
-        try{
-            return JSON.toJSONString(adminService.getAdminById(id));
+    public Admin findAdminByID(@PathVariable long id){
+        Admin admin = adminService.getById(id);
+        if(admin == null) {
+            logger.warn("Cannot find admin by id %d", id);
+            // 异常处理
+            return null;
         }
-        catch(Exception e) {
-            e.printStackTrace();
-            s.setStateCode(404);
-            s.setMessage(e.getMessage());
-            return JSON.toJSONString(s);
-        }
+        return admin;
     }
+    @AdminLoginToken
     @PostMapping(path = "/admin", consumes = "application/json", produces = "application/json")
-    public String insertAdmin(@RequestBody Admin admin) {
-        State s = new State();
-        try {
-            adminService.insertAdmin(admin);
+    public boolean insertAdmin(@RequestBody Admin admin) {
+        Admin storedAdmin = adminService.getAdminByEmail(admin.getEmail());
+        if(storedAdmin != null) {
+            logger.warn("Admin already exist");
+            return false;
         }
-        catch(Exception e) {
-            s.setStateCode(404);
-            s.setMessage(e.getMessage());
-            return JSON.toJSONString(s);
+        boolean succeed = adminService.save(admin);
+        if(!succeed) {
+            logger.warn(String.format("Insert admin %s failed", admin));
+            // 异常处理
+            return false;
         }
-        s.setMessage("ok");
-        s.setStateCode(200);
-        return JSON.toJSONString(s);
+        return true;
     }
 }

@@ -1,5 +1,7 @@
 package ddbs.bit.project.controller;
 
+import com.auth0.jwt.JWT;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import ddbs.bit.project.annotation.AdminLoginToken;
 import ddbs.bit.project.annotation.UserLoginToken;
 import ddbs.bit.project.dao.entity.Orders;
@@ -10,6 +12,8 @@ import org.apache.shardingsphere.core.strategy.keygen.SnowflakeShardingKeyGenera
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -18,6 +22,7 @@ import java.util.List;
  * @author: lihuichao
  * @create: 2019-12-16
  **/
+@RestController
 public class OrdersController {
     private Logger logger = LogManager.getLogger(GoodsController.class);
     @Autowired
@@ -41,10 +46,15 @@ public class OrdersController {
     }
     @UserLoginToken
     @PostMapping(path="orders", consumes = "application/json", produces = "application/json")
-    public boolean addGood(@RequestBody Orders order) {
-        // 前端提交数据时并不需要提交id
+    public boolean addGood(@RequestHeader("token") String token, @RequestBody Orders order) {
+        // 前端提交数据时不需要提交交易的id以及用户的id，但需要提交商品id
+        long userId = Long.parseLong(JWT.decode(token).getAudience().get(0));
         SnowflakeShardingKeyGenerator snowflakeShardingKeyGenerator = new SnowflakeShardingKeyGenerator();
         order.setId(Long.valueOf(snowflakeShardingKeyGenerator.generateKey().toString()));
+        order.setUserId(userId);
+        // 购买时间
+        Date date = new Date(Calendar.getInstance().getTime().getTime());
+        order.setOrderTime(date);
         boolean succeed = ordersService.save(order);
         if(!succeed) {
             // 异常处理
@@ -56,8 +66,8 @@ public class OrdersController {
     @UserLoginToken
     @PutMapping(path="orders/{id}", consumes = "application/json", produces = "application/json")
     public boolean updateOrderById(@RequestBody Orders order, @PathVariable long id) {
-        Orders old = ordersService.getById(id);
-        boolean succeed = ordersService.updateById(order);
+        UpdateWrapper<Orders> updateWrapper = new UpdateWrapper<>();
+        boolean succeed = ordersService.update(order, updateWrapper.eq("id", id));
         if(!succeed) {
             logger.warn(String.format("Update order with id %d failed!", id));
             return false;

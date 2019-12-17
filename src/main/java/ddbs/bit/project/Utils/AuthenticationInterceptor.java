@@ -68,16 +68,15 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                 } catch (JWTDecodeException j) {
                     throw new RuntimeException("401");
                 }
-                Admin admin = adminService.getAdminById(Long.parseLong(id));
                 User user = userService.getById(Long.parseLong(id));
-                if (admin == null && user == null) {
+                if (user == null) {
                     throw new RuntimeException("用户不存在，请重新登录");
                 }
                 // 验证 token
-                if(admin == null && user != null) {
+                else {
                     JWTVerifier jwtVerifierUser = JWT.require(Algorithm.HMAC256(user.getPassword())).build();
                     try {
-                        // 先验证是否以用户的身份登陆
+                        // 验证是否以用户的身份登陆
                         jwtVerifierUser.verify(token);
                     } catch (JWTVerificationException e) {
                         logger.warn("Unmatched user id and password!");
@@ -85,17 +84,6 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                     }
                     return true;
                 }
-                if(admin != null && user == null) {
-                    JWTVerifier jwtVerifierAdmin = JWT.require(Algorithm.HMAC256(admin.getPassword())).build();
-                    try {
-                        jwtVerifierAdmin.verify(token);
-                    } catch (JWTVerificationException e) {
-                        logger.warn("Unmatched admin id and password");
-                        return false;
-                    }
-                    return true;
-                }
-                return true;
             }
         }
         if(method.isAnnotationPresent(AdminLoginToken.class)){
@@ -113,13 +101,13 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                     return false;
                     // throw new RuntimeException("401");
                 }
-                Admin admin = adminService.getAdminById(Long.parseLong(adminId));
+                Admin admin = adminService.getById(Long.parseLong(adminId));
                 JWTVerifier jwtVerifierAdmin = JWT.require(Algorithm.HMAC256(admin.getPassword())).build();
                 try {
                     // 先验证是否以用户的身份登陆
                     jwtVerifierAdmin.verify(token);
                 }
-                catch (JWTVerificationException userException) {
+                catch (JWTVerificationException adminException) {
                     logger.warn(String.format("Requests with wrong password"));
                     return false;
                 }
