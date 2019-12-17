@@ -1,5 +1,6 @@
 package ddbs.bit.project.service.Impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import ddbs.bit.project.dao.entity.Admin;
@@ -20,4 +21,13 @@ import java.util.UUID;
 
 @Service
 public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements AdminService {
+
+    @Autowired
+    private AdminService adminService;
+    @Override
+    public Admin getAdminByEmail(String email) {
+        QueryWrapper<Admin> queryWrapper = new QueryWrapper<>();
+        Admin storedAdmin = adminService.getOne(queryWrapper.eq("email", email));
+        return storedAdmin;
+    }
 }

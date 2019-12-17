@@ -9,4 +9,5 @@ import java.util.List;
 
 @Service
 public interface AdminService extends IService<Admin> {
+    Admin getAdminByEmail(String email);
 }

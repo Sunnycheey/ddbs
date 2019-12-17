@@ -41,6 +41,11 @@ public class UserController {
     }
     @PostMapping(path="/users", consumes = "application/json", produces = "application/json")
     public boolean addUser(@RequestBody User user) {
+        User storedUser = userService.getUserByEmail(user.getEmail());
+        if(storedUser != null) {
+            logger.warn("User already exist");
+            return false;
+        }
         SnowflakeShardingKeyGenerator snowflakeShardingKeyGenerator = new SnowflakeShardingKeyGenerator();
         Long id = Long.parseLong(snowflakeShardingKeyGenerator.generateKey().toString());
         user.setId(id);

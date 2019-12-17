@@ -36,6 +36,11 @@ public class AdminController {
     @AdminLoginToken
     @PostMapping(path = "/admin", consumes = "application/json", produces = "application/json")
     public boolean insertAdmin(@RequestBody Admin admin) {
+        Admin storedAdmin = adminService.getAdminByEmail(admin.getEmail());
+        if(storedAdmin != null) {
+            logger.warn("Admin already exist");
+            return false;
+        }
         boolean succeed = adminService.save(admin);
         if(!succeed) {
             logger.warn(String.format("Insert admin %s failed", admin));

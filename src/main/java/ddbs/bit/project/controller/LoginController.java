@@ -29,7 +29,7 @@ public class LoginController {
     @PostMapping("userLogin")
     public String login(@RequestBody User user) {
         State state = new State();
-        User userForBase = userService.getById(user.getId());
+        User userForBase = userService.getUserByEmail(user.getEmail());
         if(userForBase == null){
             state.setStateCode(0);
             state.setMessage("登录失败,用户不存在");
@@ -50,7 +50,7 @@ public class LoginController {
     @PostMapping("adminLogin")
     public String login(@RequestBody Admin admin){
         State state = new State();
-        Admin adminForBase =adminService.getById(admin.getId());
+        Admin adminForBase =adminService.getAdminByEmail(admin.getEmail());
         if(adminForBase == null){
             state.setStateCode(0);
             state.setMessage("登录失败,用户不存在");
@@ -73,5 +73,4 @@ public class LoginController {
     public String getAdmin() {
         return "you really get the token";
     }
-
 }
