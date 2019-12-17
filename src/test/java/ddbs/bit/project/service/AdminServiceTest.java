@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class AdminServiceTest {
     @Autowired
     private AdminService adminService;
-
+/*
     @Test
     public void insertAdmin() {
         SnowflakeShardingKeyGenerator snowflakeShardingKeyGenerator = new SnowflakeShardingKeyGenerator();
@@ -36,6 +36,8 @@ class AdminServiceTest {
             }
         }
     }
+
+ */
     @Test void selectAdmin() {
 
         System.out.println(adminService.list().size());

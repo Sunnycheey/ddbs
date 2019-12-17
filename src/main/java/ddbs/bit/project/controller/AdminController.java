@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.websocket.server.PathParam;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 @RestController
@@ -35,12 +38,16 @@ public class AdminController {
     }
     @AdminLoginToken
     @PostMapping(path = "/admin", consumes = "application/json", produces = "application/json")
-    public boolean insertAdmin(@RequestBody Admin admin) {
+    public boolean insertAdmin(@RequestBody Admin admin) throws NoSuchAlgorithmException {
         Admin storedAdmin = adminService.getAdminByEmail(admin.getEmail());
         if(storedAdmin != null) {
             logger.warn("Admin already exist");
             return false;
         }
+        String originalPassword = admin.getPassword();
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] hash = digest.digest(originalPassword.getBytes(StandardCharsets.UTF_8));
+        admin.setHash(hash);
         boolean succeed = adminService.save(admin);
         if(!succeed) {
             logger.warn(String.format("Insert admin %s failed", admin));
