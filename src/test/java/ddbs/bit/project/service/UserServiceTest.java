@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 
 class UserServiceTest {
-
+    /*
     @Autowired
     private UserService userService;
 
@@ -54,6 +54,8 @@ class UserServiceTest {
         }
         userService.saveBatch(userList);
     }
+
+     */
 /*
     @Test
     public void getPage() {
